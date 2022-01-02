@@ -17,4 +17,5 @@ const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
     </div>
   </div>
 );
+// withRouter(MenuItem); дает доступ к хистори матч и локатион, у этого чайлд компонента (родитель Homepage)
 export default withRouter(MenuItem);
