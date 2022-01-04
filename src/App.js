@@ -24,7 +24,7 @@ class App extends React.Component {
 
         //так мы помещаем в наш стейт данные о пользователе из файрбейз
         userRef.onSnapshot((snapShot) => {
-          //snapShot.data() это непосредственно данные из файрстор
+          //snapShot.data() это непосредственно данные из файрстор.
           this.setState(
             {
               currentUser: {

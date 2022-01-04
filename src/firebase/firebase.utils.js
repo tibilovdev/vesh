@@ -11,7 +11,7 @@ const config = {
   appId: '1:822208956370:web:fc25eaf9a4921727f92a0b',
 };
 
-//создание записи в firestore
+//создание записи в firestore.
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
