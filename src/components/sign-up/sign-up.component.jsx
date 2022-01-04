@@ -21,7 +21,7 @@ class SignUp extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const { displayName, email, password, confirmPassword } = this.state;
-
+    // проверка пароля и подтвержденного пароля
     if (password !== confirmPassword) {
       alert('Пароли не совпадают');
       return;
@@ -32,7 +32,7 @@ class SignUp extends React.Component {
         email,
         password
       );
-
+      console.log(user);
       await createUserProfileDocument(user, { displayName });
 
       // это чистит нашу форму
