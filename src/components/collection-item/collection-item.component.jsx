@@ -29,4 +29,5 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addItem(item));
   },
 });
+
 export default connect(null, mapDispatchToProps)(CollectionItem);

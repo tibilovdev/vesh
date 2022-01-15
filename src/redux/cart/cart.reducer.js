@@ -1,5 +1,7 @@
 import { cartActionTypes } from './cart.types';
 import { addItemToCart } from './cart.utils';
+import { clearItemFromCart } from './cart.utils';
+import { removeItem } from './cart.utils';
 
 const INITIAL_STATE = {
   hidden: true,
@@ -18,6 +20,16 @@ const cartReduser = (state = INITIAL_STATE, action) => {
         ...state,
         // addItemToCart влзвращает это  {...state.cartItems, action.payload, с добавлением куантити. Постмотри тело функции.}
         cartItems: addItemToCart(state.cartItems, action.payload),
+      };
+    case cartActionTypes.CLEAR_ITEM_FROM_CART:
+      return {
+        ...state,
+        cartItems: clearItemFromCart(state.cartItems, action.payload),
+      };
+    case cartActionTypes.REMOVE_ITEM:
+      return {
+        ...state,
+        cartItems: removeItem(state.cartItems, action.payload),
       };
     default:
       return state;

@@ -16,3 +16,22 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
   //  добавляем в корзину товар которого там еще нет и даем quantity: 1
   return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
 };
+
+export const clearItemFromCart = (cartItems, cartItemToClear) => {
+  return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
+};
+
+export const removeItem = (cartItems, cartItemToRemove) => {
+  const existingCartItem = cartItems.find(
+    (cartItem) => cartItem.id === cartItemToRemove.id
+  );
+  if (existingCartItem.quantity === 1) {
+    return clearItemFromCart(cartItems, cartItemToRemove);
+  }
+
+  return cartItems.map((cartItem) =>
+    cartItem.id === cartItemToRemove.id
+      ? { ...cartItem, quantity: cartItem.quantity - 1 }
+      : cartItem
+  );
+};
