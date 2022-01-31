@@ -19,7 +19,7 @@ class CartIcon extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   return {
     // пересмотри 131 видео
     // тут мы выводим общее количество item ов  в корзине

@@ -10,7 +10,7 @@ const selectCart = (state) => state.cart;
 
 // эта функция мемоизует cartItems
 export const selectCartItems = createSelector([selectCart], (cart) => {
-  console.log(cart, '+++++++++');
+  //console.log(cart, '+++++++++');
   return cart.cartItems;
 });
 
@@ -25,7 +25,7 @@ export const selectCartItemsCount = createSelector(
   [selectCartItems],
   //console.log(selectCartItems),
   (cartItems) => {
-    console.log(cartItems, '-----------');
+    //console.log(cartItems, '-----------');
     return cartItems.reduce(
       (accumaltedQuantity, cartItem) => accumaltedQuantity + cartItem.quantity,
       0

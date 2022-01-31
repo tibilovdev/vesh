@@ -33,7 +33,7 @@ class App extends React.Component {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-        console.log(userAuth, 'userAuth');
+        // console.log(userAuth, 'userAuth');
 
         //так мы помещаем в наш стейт данные о пользователе из файрбейз
         userRef.onSnapshot((snapShot) => {

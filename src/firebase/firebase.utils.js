@@ -18,7 +18,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   //вытаскиваем определенную запись из файрстор
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   const snapShot = await userRef.get();
-  console.log(snapShot, '------------------', userRef);
+  //console.log(snapShot, '------------------', userRef);
   // snapshot это объект о записи, в которой есть параметр exists, которая говорит о том сушествует ли запись или нет  в базе данных
   if (!snapShot.exists) {
     // если такой записи не существует, то мы ее создаем, предварительно вытащив из обьекта авторизации  пользователя данные которые нам нужны

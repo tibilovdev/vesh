@@ -7,7 +7,6 @@ import { addItem } from '../../redux/cart/cart.actions';
 
 import './collection-item.styles.scss';
 
-//видео остановидась здесь
 const CollectionItem = ({ item, addItem }) => {
   const { name, price, imageUrl } = item;
   return (
