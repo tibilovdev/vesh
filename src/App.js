@@ -12,7 +12,11 @@ import CheckOutPage from './pages/checkout/checkout.component';
 
 import Header from './components/header/header.component';
 
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import {
+  auth,
+  createUserProfileDocument,
+  addCollectionAndDocuments,
+} from './firebase/firebase.utils';
 
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
@@ -27,6 +31,7 @@ class App extends React.Component {
 
   unsubscribeFromAuth = null;
   //userAuth - объект о пользователе авторизаващийся через гугл или через форму
+  //функции обсерверы (начинающиийся на on) могут принимать вторым аргументом функцию ерор хендлер 186 эти обсерверы срабатывают  в тот момент когда что-то касательно их изменяется
   componentDidMount() {
     const { setCurrentUser } = this.props;
     // console.log(this.props, 111111111);
@@ -36,6 +41,7 @@ class App extends React.Component {
         // console.log(userAuth, 'userAuth');
 
         //так мы помещаем в наш стейт данные о пользователе из файрбейз
+        //onSnapshot это листнер который срабатывает тогда когда снапшот меняется. а он меняется в тот момент когда в делаем CRUD операции. в частности createUserProfileDocument мы создаем новую запись (userRef.set)
         userRef.onSnapshot((snapShot) => {
           //snapShot.data() это непосредственно данные из файрстор.
 
@@ -46,11 +52,14 @@ class App extends React.Component {
         });
       }
       //тут  userAuth равняется null
-      else setCurrentUser(userAuth);
+      else {
+        setCurrentUser(userAuth);
+      }
     });
   }
 
   componentWillUnmount() {
+    //  по правилам файрстора в конце жизни компонента нужно вызывать функцию которая является On слушателем, чтобы прекратить работуу этого слуштеля
     this.unsubscribeFromAuth();
   }
   render() {

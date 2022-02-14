@@ -15,7 +15,7 @@ export const selectShopCollections = createSelector(
 //);
 export const selectShopCollectionsForPreview = createSelector(
   [selectShopCollections],
-  (collections) => Object.values(collections)
+  (collections) => (collections ? Object.values(collections) : [])
 );
 
 // т.к в нашей базе данных индексы цифры , а нам нужно чтобы по параметру юрл нам доставалась из бд определенная колеция (у которых айд цифры, а параметр юрл строка), то мы пока наверху сделали объект который присваивает каждой категории цифру его айди (COLLECTION_ID_MAP) и далее мы тут в сселекторе ищем ту колекцию  у котрой айд равен  COLLECTION_ID_MAP[collectionUrlParam], где    COLLECTION_ID_MAP это наш обект наверху, а collectionUrlParam эьлстроковый праметр юрл из адресной строки браузера . и по факту  COLLECTION_ID_MAP[collectionUrlParam] нам выдает одну из цифр соответсвующих айди в базе данных. и если айди колекции из бд равен COLLECTION_ID_MAP[collectionUrlParam] то нам селектор выдает эту колекцию
@@ -39,8 +39,7 @@ export const selectShopCollectionsForPreview = createSelector(
 // );
 
 export const selectCollection = memoize((collectionUrlParam) =>
-  createSelector(
-    [selectShopCollections],
-    (collections) => collections[collectionUrlParam]
+  createSelector([selectShopCollections], (collections) =>
+    collections ? collections[collectionUrlParam] : null
   )
 );
