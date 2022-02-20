@@ -4,7 +4,10 @@ import CustomButton from '../custom-button/custom-button.component';
 
 import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
+import { signUpStart } from '../../redux/user/user.actions';
+
 import './sign-up.styles.scss';
+import { connect } from 'react-redux';
 
 class SignUp extends React.Component {
   constructor() {
@@ -21,31 +24,18 @@ class SignUp extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const { displayName, email, password, confirmPassword } = this.state;
+    const { signUpStart } = this.props;
     // проверка пароля и подтвержденного пароля
     if (password !== confirmPassword) {
       alert('Пароли не совпадают');
       return;
     }
-    try {
-      //Создает новую учетную запись пользователя, связанную с указанным адресом электронной почты и паролем. user это учетнаЯ запись
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      console.log(user);
-      await createUserProfileDocument(user, { displayName });
 
-      // это чистит нашу форму
-      this.setState({
-        displayName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    signUpStart({ displayName, email, password });
+
+    // это чистит нашу форму
   };
+
   handleChange = (event) => {
     const { name, value } = event.target;
     // [name]: value  так мы динамически ставим стейт. name  у нас может быть разным и  'displayName' и 'email' и 'password' и 'confirm password'. поэтому у нас [name]
@@ -97,4 +87,8 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (userCredencials) => dispatch(signUpStart(userCredencials)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);

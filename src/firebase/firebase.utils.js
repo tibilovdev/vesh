@@ -49,14 +49,14 @@ export const addCollectionAndDocuments = async (
   objectsToAdd
 ) => {
   const collectionRef = firestore.collection(collectionKey);
-  console.log(collectionRef);
+  //console.log(collectionRef);
   //batch нужен для того чтобы выгрузить все данные. и чтобы не было вероятности что какие то данные не выгурзятся
   const batch = firestore.batch();
   //мы проходимся по нашему массиву и для каждого значкения делаем дела
   objectsToAdd.forEach((obj) => {
     //  newDocRef = collectionRef.doc(); вохзращает нам рефы с рандомными id. если в doc() закинуть аргументом что то то оно и будет ид. на каждой итерации форича вернется один новый реф объект
     const newDocRef = collectionRef.doc();
-    console.log(newDocRef);
+    //console.log(newDocRef);
     // мы сетим на адресе\пути\айди\рефе newDocRef наш один элемент (obj)из objectsToAdd
     batch.set(newDocRef, obj);
   });
@@ -85,12 +85,22 @@ export const convertCollectionsSnapshotToMap = (collections) => {
     return accum;
   }, {});
 };
+//205
+export const getCurrentUser = () => {
+  return new Promise((res, rej) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe();
+      res(userAuth);
+    }, rej);
+  });
+};
+
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
 
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
 export default firebase;

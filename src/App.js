@@ -12,55 +12,14 @@ import CheckOutPage from './pages/checkout/checkout.component';
 
 import Header from './components/header/header.component';
 
-import {
-  auth,
-  createUserProfileDocument,
-  addCollectionAndDocuments,
-} from './firebase/firebase.utils';
-
-import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
+import { checkUserSession } from './redux/user/user.actions';
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null,
-    };
-  }
-
   unsubscribeFromAuth = null;
-  //userAuth - объект о пользователе авторизаващийся через гугл или через форму
-  //функции обсерверы (начинающиийся на on) могут принимать вторым аргументом функцию ерор хендлер 186 эти обсерверы срабатывают  в тот момент когда что-то касательно их изменяется
   componentDidMount() {
-    const { setCurrentUser } = this.props;
-    // console.log(this.props, 111111111);
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        // console.log(userAuth, 'userAuth');
-
-        //так мы помещаем в наш стейт данные о пользователе из файрбейз
-        //onSnapshot это листнер который срабатывает тогда когда снапшот меняется. а он меняется в тот момент когда в делаем CRUD операции. в частности createUserProfileDocument мы создаем новую запись (userRef.set)
-        userRef.onSnapshot((snapShot) => {
-          //snapShot.data() это непосредственно данные из файрстор.
-
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data(),
-          });
-        });
-      }
-      //тут  userAuth равняется null
-      else {
-        setCurrentUser(userAuth);
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    //  по правилам файрстора в конце жизни компонента нужно вызывать функцию которая является On слушателем, чтобы прекратить работуу этого слуштеля
-    this.unsubscribeFromAuth();
+    const { checkUserSession } = this.props;
+    checkUserSession();
   }
   render() {
     return (
@@ -101,7 +60,7 @@ const mapStateToProps = (state) => ({
 });
 //mapDispatchToProps позводяет нам закинуть наши актионы в стор и сразу их задиспачить (естественно актионы будут в пропсах, в нашем случае этого компонента Арр)
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+  checkUserSession: () => dispatch(checkUserSession()),
 });
 // mут первая нулл потому что в конекте первым аргументом всегда идет mapStateToProps
 export default connect(mapStateToProps, mapDispatchToProps)(App);
